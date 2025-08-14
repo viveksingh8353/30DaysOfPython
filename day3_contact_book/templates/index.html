@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Contact Book</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <div class="container">
+    <h1>📇 Contact Book</h1>
+
+    <form class="card" method="POST" action="/add">
+      <h2>Add / Update Contact</h2>
+      <div class="grid">
+        <input name="name" type="text" placeholder="Full name" required />
+        <input name="phone" type="text" placeholder="Phone" required />
+        <input name="email" type="email" placeholder="Email" required />
+      </div>
+      <button type="submit">Save</button>
+    </form>
+
+    <form class="search" method="GET" action="/">
+      <input name="q" type="text" value="{{ q }}" placeholder="Search by name/phone/email" />
+      <button type="submit">Search</button>
+      {% if q %}
+        <a class="clear" href="/">Clear</a>
+      {% endif %}
+    </form>
+
+    <div class="card">
+      <h2>Contacts ({{ contacts|length }})</h2>
+      {% if contacts %}
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Phone</th><th>Email</th><th></th></tr>
+          </thead>
+          <tbody>
+            {% for c in contacts %}
+              <tr>
+                <td>{{ c.name }}</td>
+                <td>{{ c.phone }}</td>
+                <td>{{ c.email }}</td>
+                <td>
+                  <form method="POST" action="/delete/{{ loop.index0 }}">
+                    <button class="danger" type="submit">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No contacts yet. Add one above 👆</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
